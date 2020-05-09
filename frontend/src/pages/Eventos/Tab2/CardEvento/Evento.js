@@ -1,7 +1,7 @@
 import React from 'react';
 import { Avatar, Grid, Typography } from '@material-ui/core';
-import EditarEvents from './EditarEvents';
-import ExcluirEvents from './ExcluirEvents';
+import EditarEvents from '../../Action/EditarEvents';
+import ExcluirEvents from '../../Action/ExcluirEvents';
 
 export default function Evento({
   event,

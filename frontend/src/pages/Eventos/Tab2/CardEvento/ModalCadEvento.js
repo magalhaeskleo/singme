@@ -45,7 +45,18 @@ const style = makeStyles((theme) => ({
 
 const BR = 'DD/MM/YYYY';
 
-export default function ModalCadEvento({ event, onClose, onSubmit }) {
+function formatDateBR(date) {
+  const unixParseDate = new Date(date);
+  const formatMoment = moment(unixParseDate).format('DD/MM/YYYY');
+  return moment(formatMoment, BR);
+}
+
+export default function ModalCadEvento({
+  daySelected,
+  event,
+  onClose,
+  onSubmit,
+}) {
   function clear() {
     // setDate(moment());
     // setSoundCheckValue(moment().subtract(1.5, 'hours'));
@@ -60,6 +71,7 @@ export default function ModalCadEvento({ event, onClose, onSubmit }) {
     const showtime = form.showtime['_i'];
 
     const formAlt = { ...form, date, showstart, soundcheck, showtime };
+
     onSubmit(formAlt);
   }
 
@@ -69,10 +81,10 @@ export default function ModalCadEvento({ event, onClose, onSubmit }) {
     location: event ? event.location : '',
 
     date: event
-      ? moment(event.date, BR)
+      ? formatDateBR(event.date)
       : moment({
-          ...moment(),
-          _i: moment().format('DD/MM/YYYY'),
+          ...moment(daySelected),
+          _i: moment(daySelected).format('DD/MM/YYYY'),
           _f: 'DD/MM/YYYY',
         }),
 

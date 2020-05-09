@@ -54,8 +54,8 @@ const style = makeStyles((theme) => ({
   },
 }));
 
-const sleep = (milliseconds) => {
-  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+const sleep = () => {
+  return new Promise((resolve) => setTimeout(resolve, 500));
 };
 
 export default function CardLista({ event }) {
@@ -95,7 +95,7 @@ export default function CardLista({ event }) {
 
   async function getNamesForTheEvent() {
     setLoading(true);
-    await sleep(500);
+    await sleep();
     const grupo_id = localStorage.getItem('grupo_id');
 
     const nameList = await api.get(`/listas/${event.id}`, {

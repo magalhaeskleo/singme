@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Event } from '@material-ui/icons';
 import api from '../../../../services/Api';
 import moment from 'moment';
-import AddEvents from './AddEvents';
+import AddEvents from '../../Action/AddEvents';
 import Evento from './Evento';
 import AlertSuccess from '../../../Components/AlertSuccess';
 import LoadingPage from '../../../Components/LoadingPage';
@@ -152,7 +152,7 @@ export default function CardEventos({ daySelected, callbackHandleEvento }) {
                     {getCardName()}
                   </Typography>
                 </Grid>
-                {}
+
                 <Grid item>
                   <Typography className={classes.typographyColor} variant="h5">
                     {eventsDay.length}
@@ -162,12 +162,10 @@ export default function CardEventos({ daySelected, callbackHandleEvento }) {
             </Grid>
 
             <Grid item>
-              {
-                <AddEvents
-                  daySelected={daySelected}
-                  callbackAddEvent={callbackAddEvent}
-                />
-              }
+              <AddEvents
+                daySelected={daySelected}
+                callbackAddEvent={callbackAddEvent}
+              />
             </Grid>
           </Grid>
 

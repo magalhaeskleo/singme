@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
 const lightColor = 'rgba(255, 255, 255, 0.7)';
+const dark = '#232f3e';
 
 const styles = (theme) => ({
   secondaryBar: {
@@ -39,7 +40,12 @@ const styles = (theme) => ({
 function Header({ name, classes, onDrawerToggle, children }) {
   return (
     <React.Fragment>
-      <AppBar color="primary" position="sticky" elevation={0}>
+      <AppBar
+        color="primary"
+        position="sticky"
+        elevation={0}
+        style={{ backgroundColor: dark }}
+      >
         <Toolbar>
           <Grid
             container

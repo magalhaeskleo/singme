@@ -1,26 +1,54 @@
 import React, { useState } from 'react';
+import { Formik, Form } from 'formik';
 import { Link, useHistory } from 'react-router-dom';
-import { TextField, Button, Grid } from '@material-ui/core';
+
+import {
+  TextField,
+  Button,
+  Grid,
+  Typography,
+  makeStyles,
+  Container,
+} from '@material-ui/core';
+
 import api from '../../services/Api';
-import { stylePage } from '../styles';
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(10),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(10),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+    borderRadius: 20,
+  },
+}));
 
 export default function Logon() {
-  const classes = stylePage();
+  const classes = useStyles();
   const history = useHistory();
-  const [grupoId, setGrupoId] = useState();
 
   function handleChange(value) {
-    setGrupoId(value);
+    // setGrupoId(value);
   }
 
-  async function handleLogon() {
-    const id = grupoId;
+  async function submit(form) {
+    console.log(form);
+
+    const id = '33c58268615a19e3';
     const response = await api.post('/session', { id });
 
     try {
       if (response.data) {
-        localStorage.setItem('grupo_id', grupoId);
-        localStorage.setItem('grupo_name', response.data.name);
+        localStorage.setItem('grupo_id', id);
+        //  localStorage.setItem('grupo_name', response.data.name);
         history.push('/home');
       }
     } catch (error) {
@@ -28,65 +56,75 @@ export default function Logon() {
     }
   }
 
+  const init = { email: '', password: '' };
+
   return (
-    <Grid
-      container
-      direction="column"
-      justify="center"
-      alignItems="center"
-      style={{ color: 'white' }}
-      spacing={2}
-    >
-      <Grid item>
-        <h1 className={classes.logo}>SINGME</h1>
-      </Grid>
-      <Grid item>
-        <h2>Seja bem vindo!</h2>
-      </Grid>
-
-      <Grid container style={{ maxWidth: 500 }}>
-        <Grid item xs={12}>
-          <TextField
-            className={classes.input}
-            fullWidth
-            id="name"
-            variant="outlined"
-            name="name"
-            onChange={(e) => handleChange(e.target.value)}
-            value={grupoId}
-            size="small"
-            placeholder="Nome"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            className={classes.input}
-            fullWidth
-            id="email"
-            variant="outlined"
-            name="email"
-            value="email"
-            onChange={() => console.log('email')}
-            size="small"
-            placeholder="E-mail"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Button
-            onClick={handleLogon}
-            className={classes.button}
-            variant="contained"
-            color="primary"
-            fullWidth
-          >
-            Entrar
-          </Button>
-        </Grid>
-      </Grid>
-
-      <Link to="/register" className={classes.link}>
-        Ainda não tem cadastro? Clique aqui.
-      </Link>
-    </Grid>
+    <Container component="main" maxWidth="xs">
+      <div className={classes.paper}>
+        <Typography component="h1" variant="h5">
+          Seja bem Vindo!
+        </Typography>
+        <Typography component="h1" variant="h4">
+          SINGME
+        </Typography>
+        <Formik
+          initialValues={init}
+          onSubmit={submit}
+          render={(props) => (
+            <Form className={classes.form} noValidate>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="email"
+                    label="E-mail"
+                    name="email"
+                    autoComplete="email"
+                    onChange={props.handleChange}
+                    value={props.values.email}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    onChange={props.handleChange}
+                    value={props.values.name}
+                    autoComplete="current-password"
+                  />
+                </Grid>
+              </Grid>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Login
+              </Button>
+              <Grid
+                container
+                justify="space-between"
+                alignItems="flex-end"
+                direction="column"
+              >
+                <Grid item>
+                  <Link to="/forgot">Esqueceu a senha?</Link>
+                </Grid>
+                <Grid item>
+                  <Link to="/register">Ainda não tem cadastro?</Link>
+                </Grid>
+              </Grid>
+            </Form>
+          )}
+        />
+      </div>
+    </Container>
   );
 }

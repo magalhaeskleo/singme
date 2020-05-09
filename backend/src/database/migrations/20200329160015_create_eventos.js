@@ -1,7 +1,7 @@
 exports.up = function (knex) {
   return knex.schema.createTable('eventos', function (table) {
     table.increments(), table.string('name').notNullable();
-    table.string('date').notNullable();
+    table.date('date').notNullable();
     table.string('location').notNullable();
     table.string('soundcheck').notNullable();
     table.string('showstart').notNullable();
@@ -10,6 +10,7 @@ exports.up = function (knex) {
 
     table.string('grupo_id').notNullable();
     table.foreign('grupo_id').references('id').inTable('grupos');
+    table.date('createdAt').notNullable();
   });
 };
 

@@ -5,10 +5,19 @@ const listasController = require('./controller/listasController');
 const sessionController = require('./controller/sessionController');
 const eventosDayController = require('./controller/eventosDayController');
 const nameController = require('./controller/nameController');
+const usersController = require('./controller/usersController');
+const sendEmailController = require('./controller/sendEmailController');
 
 const routes = express.Router();
+// sobre envio de email
+routes.post('/sendEmail', sendEmailController.senEmail);
+
 // sobre entrar no app
 routes.post('/session', sessionController.index);
+
+// sobre usuarios
+routes.post('/users', usersController.create);
+routes.get('/users/list', usersController.list);
 
 // sobre a tabela de grupos
 routes.post('/grupos', grupoController.create);
@@ -16,7 +25,7 @@ routes.get('/grupos', grupoController.index);
 
 // sobre a tabela de eventos
 routes.post('/eventos', eventosController.create);
-routes.get('/eventos', eventosController.list);
+routes.get('/eventos/:year', eventosController.list);
 
 routes.get('/eventos/:id', eventosController.index);
 routes.put('/eventos/:id', eventosController.put);

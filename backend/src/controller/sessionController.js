@@ -3,7 +3,7 @@ const connection = require('../database/connection');
 module.exports = {
   async index(request, response) {
     const { id } = request.body;
-    console.log('chegou aqui ', id);
+
     const grupo = await connection('grupos')
       .where('id', id)
       .select('*')

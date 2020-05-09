@@ -1,15 +1,21 @@
 const connection = require('../database/connection');
 
+function parseToDateFormat(date) {
+  const [dia, mes, ano] = date.split('/');
+  return Date.parse(`${ano}/${mes}/${dia}`);
+}
+
 module.exports = {
   async index(request, response) {
     const { date } = request.body;
 
+    const parseToDate = parseToDateFormat(date);
     const grupo_id = request.headers.authorization;
 
     const eventosDay = await connection('eventos')
       .select('*')
       .where('grupo_id', grupo_id)
-      .where('date', date);
+      .where('date', parseToDate);
 
     return response.json(eventosDay);
   },

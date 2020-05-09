@@ -3,17 +3,19 @@ const crypto = require('crypto');
 
 module.exports = {
   async create(request, response) {
-    const { name, email, password, whatsapp, city, uf } = request.body;
-    const id = crypto.randomBytes(4).toString('HEX');
+    const { name, email, password, city, uf } = request.body;
+    const id = crypto.randomBytes(8).toString('HEX');
+
+    const createdAt = new Date();
 
     await connection('grupos').insert({
       id,
       name,
       email,
-      password,
-      whatsapp,
       city,
       uf,
+      password,
+      createdAt,
     });
 
     return response.json({ id });

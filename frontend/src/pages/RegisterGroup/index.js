@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Formik, Form } from 'formik';
+import { Formik, Form, Field } from 'formik';
 
 import { Link, useHistory } from 'react-router-dom';
 import {
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Register() {
+export default function RegisterGroup() {
   const classes = useStyles();
   const history = useHistory();
   const [grupoId, setGrupoId] = useState();
@@ -40,83 +40,109 @@ export default function Register() {
     setGrupoId(value);
   }
 
-  async function handleLogon() {
-    const id = grupoId;
-    const response = await api.post('/users', { id });
+  async function submit(form) {
+    const response = await api.post('/grupos', form);
 
     try {
       if (response.data) {
-        // localStorage.setItem('grupo_id', grupoId);
-        // localStorage.setItem('grupo_name', response.data.name);
         history.push('/');
       }
     } catch (error) {
-      alert('Falha no login tente novamente');
+      alert('Falha ao tentar realizar o cadastro');
     }
   }
-
+  const initiValue = { name: '', email: '', city: '', uf: '', password: '' };
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
         <Typography component="h1" variant="h5">
-          Cadastra-se
+          Registro de Grupo
         </Typography>
         <Typography component="h1" variant="h4">
           SINGME
         </Typography>
         <Formik
+          onSubmit={submit}
+          initialValues={initiValue}
           render={(props) => (
-            <Form className={classes.form} noValidate>
+            <Form
+              onChange={() => console.log(props)}
+              className={classes.form}
+              noValidate
+            >
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <TextField
+                  <Field
                     required
                     fullWidth
                     id="name"
-                    label="Nome"
+                    label="Nome do grupo"
                     name="name"
+                    component={TextField}
+                    onChange={props.handleChange}
+                    value={props.values.name}
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
+                  <Field
                     required
                     fullWidth
                     id="email"
                     label="E-mail"
                     name="email"
                     autoComplete="email"
+                    component={TextField}
+                    onChange={props.handleChange}
+                    value={props.values.email}
                   />
                 </Grid>
-                <Grid item xs={12}>
-                  <TextField
+                <Grid item xs={12} sm={6}>
+                  <Field
                     required
                     fullWidth
-                    id="tokenEmpresa"
-                    label="Token empresa"
-                    name="tokenEmpresa"
+                    id="city"
+                    label="Cidade"
+                    name="city"
+                    component={TextField}
+                    onChange={props.handleChange}
+                    value={props.values.city}
                   />
                 </Grid>
-
+                <Grid item xs={12} sm={6}>
+                  <Field
+                    required
+                    fullWidth
+                    id="uf"
+                    label="UF"
+                    name="uf"
+                    component={TextField}
+                    onChange={props.handleChange}
+                    value={props.values.uf}
+                  />
+                </Grid>
                 <Grid item xs={12}>
-                  <TextField
+                  <Field
                     required
                     fullWidth
                     name="password"
                     label="Password"
                     type="password"
                     id="password"
+                    component={TextField}
                     autoComplete="current-password"
+                    onChange={props.handleChange}
+                    value={props.values.password}
                   />
                 </Grid>
               </Grid>
               <Button
-                type="submit"
+                onClick={props.handleSubmit}
                 fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.submit}
               >
-                Login
+                Registrar
               </Button>
               <Grid
                 container

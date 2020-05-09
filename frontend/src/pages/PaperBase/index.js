@@ -199,7 +199,7 @@ function Paperbase(props) {
       description: 'Eventos',
       page: <Eventos tabValue={tabValue} />,
       tabs: [
-        <Tab label="Período" value={1} key={1} />,
+        <Tab label="Ano" value={1} key={1} />,
         <Tab label="Dia" value={2} key={2} />,
       ],
     },
